@@ -12,14 +12,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    public String hello() {
-        return "hello";
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseBody
     public String create(@RequestBody UserDao userDao) {
-        return "a";
+        userService.insertUser(userDao);
+        return "success";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

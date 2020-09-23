@@ -12,4 +12,14 @@
         FROM MyUser
         WHERE id = #{id}
     </select>
+
+    <insert id="insertUser"
+            parameterType="com.assistant.windfall.dao.UserDao"
+            flushCache="true"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        INSERT INTO MyUser(name, password) VALUES(#{name}, #{password})
+    </insert>
 </mapper>

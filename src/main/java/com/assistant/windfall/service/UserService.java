@@ -13,4 +13,8 @@ public class UserService {
     public UserDao obtainUser(Integer id){
         return userMapper.selectUser(id);
     }
+
+    public void insertUser(UserDao userDao){
+        userMapper.insertUser(userDao);
+    }
 }
