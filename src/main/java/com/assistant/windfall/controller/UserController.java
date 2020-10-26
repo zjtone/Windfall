@@ -22,6 +22,6 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public UserDao search(@RequestParam(name = "id") Integer id) {
-        return userService.obtainUser(id);
+        return userService.obtainUserById(id);
     }
 }

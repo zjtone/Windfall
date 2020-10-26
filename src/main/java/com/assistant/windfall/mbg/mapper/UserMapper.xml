@@ -5,10 +5,16 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="idCard" property="idCard" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="orgId" property="orgId" jdbcType="INTEGER"/>
     </resultMap>
 
-    <select id="selectUser" resultMap="UserDao">
-        SELECT id, name, password
+    <select id="obtainUserById" resultMap="UserDao">
+        SELECT id, username, password, type, idCard, phone, email, openid, orgId
         FROM MyUser
         WHERE id = #{id}
     </select>
@@ -20,6 +26,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO MyUser(name, password) VALUES(#{name}, #{password})
+        INSERT INTO MyUser(username, password, type, idCard, phone, email, openid, orgId)
+        VALUES(#{username}, #{password}, #{type}, #{idCard}, #{phone}, #{email}, #{openid}, #{orgId})
     </insert>
 </mapper>

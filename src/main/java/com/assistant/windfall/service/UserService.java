@@ -10,8 +10,8 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public UserDao obtainUser(Integer id){
-        return userMapper.selectUser(id);
+    public UserDao obtainUserById(Integer id){
+        return userMapper.obtainUserById(id);
     }
 
     public void insertUser(UserDao userDao){

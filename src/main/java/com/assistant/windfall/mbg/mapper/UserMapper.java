@@ -4,7 +4,7 @@ import com.assistant.windfall.dao.UserDao;
 
 public interface UserMapper {
 
-    UserDao selectUser(Integer id);
+    UserDao obtainUserById(Integer id);
 
     void insertUser(UserDao userDao);
 }
