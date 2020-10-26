@@ -19,6 +19,11 @@
         WHERE id = #{id}
     </select>
 
+    <select id="listUser" resultMap="UserDao">
+        SELECT id, username, password, type, idCard, phone, email, openid, orgId
+        FROM MyUser
+    </select>
+
     <insert id="insertUser"
             parameterType="com.assistant.windfall.dao.UserDao"
             flushCache="true"
