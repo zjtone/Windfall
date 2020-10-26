@@ -7,5 +7,21 @@ CREATE TABLE MyUser (
     `phone` VARCHAR(20),
     `email` VARCHAR(100),
     `openid` VARCHAR(256),
-    `orgId` int
+    `orgId` int,
+    `status` int DEFAULT(1),
+    `create_time` DATE,
+    `update_time` DATE,
+    `delete_time` DATE
+);
+
+CREATE TABLE Organization (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(50),
+    `email` VARCHAR(20) NOT NULL UNIQUE,
+    `password` VARCHAR(20) NOT NULL,
+    `description` VARCHAR(512),
+    `status` int DEFAULT(1),
+    `create_time` DATE,
+    `update_time` DATE,
+    `delete_time` DATE
 );
