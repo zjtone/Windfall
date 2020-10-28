@@ -17,6 +17,6 @@ public class UserDao {
     private Integer orgId;
 
     public static class UserType{
-        public static final Integer PARENT = 0, CHILD = 1, MANAGER = 2, ADMIN = 3;
+        public static final Integer PARENT = 0, CHILD = 1;
     }
 }
