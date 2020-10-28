@@ -5,5 +5,5 @@ import com.assistant.windfall.dao.OrgDao;
 public interface OrgMapper {
     OrgDao obtainOrgById(Integer id);
 
-    void insertOrg(OrgDao userDao);
+    void insertOrg(OrgDao orgDao);
 }
