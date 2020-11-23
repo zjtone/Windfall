@@ -1,5 +1,6 @@
 package com.assistant.windfall.controller;
 
+import com.assistant.windfall.dao.EmployeeDao;
 import com.assistant.windfall.dao.OrgDao;
 import com.assistant.windfall.dao.UserDao;
 import com.assistant.windfall.service.OrgService;
@@ -28,5 +29,12 @@ public class OrgController {
     @ResponseBody
     public OrgDao search(@RequestParam(name = "id") Integer id) {
         return orgService.obtainOrgById(id);
+    }
+
+    @RequestMapping(value = "/list/", method = RequestMethod.GET)
+    @ResponseBody
+    public List<EmployeeDao> list(@RequestParam(name = "pageNum", defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        return orgService.listOrg(pageNum, pageSize);
     }
 }

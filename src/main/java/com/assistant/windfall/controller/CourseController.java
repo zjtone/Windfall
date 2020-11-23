@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/course")
 public class CourseController {
@@ -23,5 +25,9 @@ public class CourseController {
     @ResponseBody
     public CourseDao search(@RequestParam(name = "id") Integer id) {
         return courseService.obtainCourseById(id);
+    }
+
+    public List<CourseDao> listCourse(int pageNum, int pageSize){
+        return courseService.listCourse(pageNum, pageSize);
     }
 }

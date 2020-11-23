@@ -10,9 +10,14 @@
     </resultMap>
 
     <select id="obtainOrgById" resultMap="OrgDao">
-        SELECT id, name, description, email, password
+        SELECT id, name, description, email, password, status
         FROM Organization
         WHERE id = #{id}
+    </select>
+
+    <select id="listOrg" resultMap="OrgDao">
+        SELECT id, name, description, email, password, status
+        FROM Organization
     </select>
 
     <insert id="insertOrg"
@@ -22,7 +27,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO Organization(name, description, email, password)
-        VALUES(#{name}, #{description}, #{email}, #{password})
+        INSERT INTO Organization(name, description, email, password, status)
+        VALUES(#{name}, #{description}, #{email}, #{password}, #{status})
     </insert>
 </mapper>

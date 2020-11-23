@@ -12,4 +12,5 @@ public class OrgDao {
     private String description;
     private String email;
     private String password;
+    private int status;
 }

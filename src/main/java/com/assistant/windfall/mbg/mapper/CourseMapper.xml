@@ -26,4 +26,9 @@
         INSERT INTO Course(name, description, orgId, img, status)
         VALUES(#{name}, #{description}, #{orgId}, #{img}, #{status})
     </insert>
+
+    <select id="listCourse" resultMap="CourseDao">
+        SELECT id, name, description, orgId, img, status
+        FROM Course
+    </select>
 </mapper>
