@@ -11,5 +11,4 @@ public class CourseDao {
     private String description;
     private String img;
     private String orgId;
-    private int status = 1;
 }

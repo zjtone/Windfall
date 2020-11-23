@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class People {
+public abstract class People extends Dao{
     protected Integer id;
     protected String username;
     protected String password;
@@ -14,5 +14,4 @@ public abstract class People {
     protected String email;
     protected String openid;
     protected Integer orgId;
-    protected Integer status = 1;
 }
