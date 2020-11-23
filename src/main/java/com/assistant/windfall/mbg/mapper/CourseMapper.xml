@@ -7,10 +7,11 @@
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="orgId" property="orgId" jdbcType="INTEGER"/>
         <result column="img" property="img" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="obtainCourseById" resultMap="CourseDao">
-        SELECT id, name, description, orgId, img
+        SELECT id, name, description, orgId, img, status
         FROM Course
         WHERE id = #{id}
     </select>
@@ -22,7 +23,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO Course(id, name, description, orgId, img)
-        VALUES(#{id}, #{name}, #{description}, #{orgId}, #{img})
+        INSERT INTO Course(id, name, description, orgId, img, status)
+        VALUES(#{id}, #{name}, #{description}, #{orgId}, #{img}, #{status})
     </insert>
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.assistant.windfall.mbg.mapper.EmployeeMapper">
-    <resultMap id="EmployeeDao" type="com.assistant.windfall.dao.EmployeeDao">
+<mapper namespace="com.assistant.windfall.mbg.mapper.TeacherMapper">
+    <resultMap id="TeacherDao" type="com.assistant.windfall.dao.TeacherDao">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -13,25 +13,25 @@
         <result column="status" property="status" jdbcType="INTEGER"/>
     </resultMap>
 
-    <select id="obtainEmployeeById" resultMap="EmployeeDao">
+    <select id="obtainTeacherById" resultMap="TeacherDao">
         SELECT id, username, password, idCard, phone, email, openid, orgId, status
-        FROM Employee
+        FROM Teacher
         WHERE id = #{id}
     </select>
 
-    <select id="listEmployee" resultMap="EmployeeDao">
+    <select id="listTeacher" resultMap="TeacherDao">
         SELECT id, username, password, idCard, phone, email, openid, orgId, status
-        FROM Employee
+        FROM Teacher
     </select>
 
-    <insert id="insertEmployee"
-            parameterType="com.assistant.windfall.dao.EmployeeDao"
+    <insert id="insertTeacher"
+            parameterType="com.assistant.windfall.dao.TeacherDao"
             flushCache="true"
             statementType="PREPARED"
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO Employee(username, password, idCard, phone, email, openid, orgId, status)
+        INSERT INTO Teacher(username, password, idCard, phone, email, openid, orgId, status)
         VALUES(#{username}, #{password}, #{idCard}, #{phone}, #{email}, #{openid}, #{orgId}), #{status}
     </insert>
 </mapper>
