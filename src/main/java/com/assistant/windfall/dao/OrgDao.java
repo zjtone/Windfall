@@ -2,6 +2,7 @@ package com.assistant.windfall.dao;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.annotations.Options;
 
 @Getter
 @Setter

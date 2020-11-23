@@ -23,7 +23,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO Course(id, name, description, orgId, img, status)
-        VALUES(#{id}, #{name}, #{description}, #{orgId}, #{img}, #{status})
+        INSERT INTO Course(name, description, orgId, img, status)
+        VALUES(#{name}, #{description}, #{orgId}, #{img}, #{status})
     </insert>
 </mapper>

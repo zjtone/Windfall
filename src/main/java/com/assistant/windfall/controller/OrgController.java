@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Controller
@@ -20,7 +21,7 @@ public class OrgController {
     @ResponseBody
     public String create(@RequestBody OrgDao orgDao) {
         orgService.insertOrg(orgDao);
-        return "success";
+        return "" + orgDao.getId();
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

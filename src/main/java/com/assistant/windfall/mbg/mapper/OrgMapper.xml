@@ -22,7 +22,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        INSERT INTO Organization(id, name, description, email, password)
-        VALUES(#{id}, #{name}, #{description}, #{email}, #{password})
+        INSERT INTO Organization(name, description, email, password)
+        VALUES(#{name}, #{description}, #{email}, #{password})
     </insert>
 </mapper>
