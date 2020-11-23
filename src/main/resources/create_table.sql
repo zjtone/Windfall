@@ -1,5 +1,6 @@
 CREATE TABLE MyUser (
     `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `img` VARCHAR(250),
     `username` VARCHAR(50) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     `parentId` bigint(20) DEFAULT -1,
@@ -29,7 +30,7 @@ CREATE TABLE Organization (
 CREATE TABLE Course (
     `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(50),
-    `img` VARCHAR(50),
+    `img` VARCHAR(250),
     `description` VARCHAR(512),
     `status` int DEFAULT 1,
     `orgId` int

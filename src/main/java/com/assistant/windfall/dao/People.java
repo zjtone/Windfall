@@ -14,4 +14,5 @@ public abstract class People {
     protected String email;
     protected String openid;
     protected Integer orgId;
+    protected Integer status = 1;
 }

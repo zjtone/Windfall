@@ -32,6 +32,6 @@
             useGeneratedKeys="true"
             timeout="20">
         INSERT INTO Employee(username, password, idCard, phone, email, openid, orgId, status)
-        VALUES(#{username}, #{password}, #{idCard}, #{phone}, #{email}, #{openid}, #{orgId}), #{status}
+        VALUES(#{username}, #{password}, #{idCard}, #{phone}, #{email}, #{openid}, #{orgId}, #{status})
     </insert>
 </mapper>
