@@ -10,5 +10,5 @@ public interface UserMapper {
 
     void insertUser(UserDao userDao);
 
-    List<UserDao> listUser();
+    List<UserDao> listUser(Integer orgId);
 }

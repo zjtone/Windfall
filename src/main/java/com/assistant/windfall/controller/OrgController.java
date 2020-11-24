@@ -34,7 +34,8 @@ public class OrgController {
     @RequestMapping(value = "/list/", method = RequestMethod.GET)
     @ResponseBody
     public List<EmployeeDao> list(@RequestParam(name = "pageNum", defaultValue = "0") Integer pageNum,
-                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        return orgService.listOrg(pageNum, pageSize);
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                  @RequestParam(name = "orgId") Integer orgId) {
+        return orgService.listOrg(pageNum, pageSize, orgId);
     }
 }

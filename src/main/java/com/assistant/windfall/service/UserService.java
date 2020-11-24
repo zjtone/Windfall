@@ -21,8 +21,8 @@ public class UserService {
         userMapper.insertUser(userDao);
     }
 
-    public List<UserDao> listUser(int pageNum, int pageSize){
+    public List<UserDao> listUser(int pageNum, int pageSize, Integer orgId){
         PageHelper.startPage(pageNum, pageSize);
-        return userMapper.listUser();
+        return userMapper.listUser(orgId);
     }
 }

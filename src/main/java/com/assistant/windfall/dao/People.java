@@ -13,5 +13,4 @@ public abstract class People extends Dao{
     protected String phone;
     protected String email;
     protected String openid;
-    protected Integer orgId;
 }

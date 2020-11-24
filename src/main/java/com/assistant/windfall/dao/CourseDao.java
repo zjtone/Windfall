@@ -5,10 +5,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CourseDao {
+public class CourseDao extends Dao{
     private Integer id;
     private String name;
     private String description;
     private String img;
-    private String orgId;
+
+    @Override
+    public String toString() {
+        return "CourseDao{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", img='" + img + '\'' +
+                ", orgId=" + orgId +
+                '}';
+    }
 }

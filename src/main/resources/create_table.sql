@@ -22,6 +22,7 @@ CREATE TABLE Organization (
     `password` VARCHAR(20) NOT NULL,
     `description` VARCHAR(512),
     `status` int DEFAULT 1,
+    `orgId` int,
     `create_time` DATE,
     `update_time` DATE,
     `delete_time` DATE
@@ -61,6 +62,38 @@ CREATE TABLE Teacher (
     `openid` VARCHAR(256),
     `orgId` int,
     `status` int DEFAULT 1,
+    `create_time` DATE,
+    `update_time` DATE,
+    `delete_time` DATE
+);
+
+CREATE TABLE Tag (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(50) NOT NULL,
+    `status` int DEFAULT 1,
+    `orgId` int,
+    `create_time` DATE,
+    `update_time` DATE,
+    `delete_time` DATE
+);
+
+CREATE TABLE CourseTagRef (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `courseId` bigint(20),
+    `tagId` bigint(20),
+    `status` int DEFAULT 1,
+    `orgId` int,
+    `create_time` DATE,
+    `update_time` DATE,
+    `delete_time` DATE
+);
+
+CREATE TABLE CourseTeacherRef (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `courseId` bigint(20),
+    `teacherId` bigint(20),
+    `status` int DEFAULT 1,
+    `orgId` int,
     `create_time` DATE,
     `update_time` DATE,
     `delete_time` DATE

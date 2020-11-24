@@ -21,8 +21,8 @@ public class TeacherService {
         teacherMapper.insertTeacher(TeacherDao);
     }
 
-    public List<TeacherDao> listTeacher(int pageNum, int pageSize){
+    public List<TeacherDao> listTeacher(int pageNum, int pageSize, Integer orgId){
         PageHelper.startPage(pageNum, pageSize);
-        return teacherMapper.listTeacher();
+        return teacherMapper.listTeacher(orgId);
     }
 }

@@ -30,5 +30,6 @@
     <select id="listCourse" resultMap="CourseDao">
         SELECT id, name, description, orgId, img, status
         FROM Course
+        where orgId = #{orgId}
     </select>
 </mapper>

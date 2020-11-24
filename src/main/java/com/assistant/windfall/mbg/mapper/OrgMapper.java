@@ -10,5 +10,5 @@ public interface OrgMapper {
 
     void insertOrg(OrgDao orgDao);
 
-    List<EmployeeDao> listOrg();
+    List<EmployeeDao> listOrg(Integer orgId);
 }

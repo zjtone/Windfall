@@ -23,6 +23,7 @@
     <select id="listUser" resultMap="UserDao">
         SELECT id, username, password, idCard, phone, email, openid, orgId, parentId, status
         FROM MyUser
+        WHERE orgId = #{orgId}
     </select>
 
     <insert id="insertUser"

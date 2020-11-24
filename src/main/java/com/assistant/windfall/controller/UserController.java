@@ -29,7 +29,9 @@ public class UserController {
 
     @RequestMapping(value = "/list/", method = RequestMethod.GET)
     @ResponseBody
-    public List<UserDao> list(@RequestParam(name = "pageNum") Integer pageNum, @RequestParam(name = "pageSize") Integer pageSize) {
-        return userService.listUser(pageNum, pageSize);
+    public List<UserDao> list(@RequestParam(name = "pageNum", defaultValue = "0") Integer pageNum,
+                              @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                              @RequestParam(name = "orgId") Integer orgId) {
+        return userService.listUser(pageNum, pageSize, orgId);
     }
 }

@@ -24,10 +24,8 @@ public class CourseService {
         courseMapper.insertCourse(CourseDao);
     }
 
-    @RequestMapping(value = "/list/", method = RequestMethod.GET)
-    @ResponseBody
-    public List<CourseDao> listCourse(int pageNum, int pageSize) {
+    public List<CourseDao> listCourse(int pageNum, int pageSize, Integer orgId) {
         PageHelper.startPage(pageNum, pageSize);
-        return courseMapper.listCourse();
+        return courseMapper.listCourse(orgId);
     }
 }

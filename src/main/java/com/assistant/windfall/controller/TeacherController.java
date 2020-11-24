@@ -29,7 +29,9 @@ public class TeacherController {
 
     @RequestMapping(value = "/list/", method = RequestMethod.GET)
     @ResponseBody
-    public List<TeacherDao> list(@RequestParam(name = "pageNum") Integer pageNum, @RequestParam(name = "pageSize") Integer pageSize) {
-        return teacherService.listTeacher(pageNum, pageSize);
+    public List<TeacherDao> list(@RequestParam(name = "pageNum", defaultValue = "0") Integer pageNum,
+                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "orgId") Integer orgId) {
+        return teacherService.listTeacher(pageNum, pageSize, orgId);
     }
 }

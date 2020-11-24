@@ -22,6 +22,7 @@
     <select id="listEmployee" resultMap="EmployeeDao">
         SELECT id, username, password, idCard, phone, email, openid, orgId, status
         FROM Employee
+        where orgId = #{orgId}
     </select>
 
     <insert id="insertEmployee"

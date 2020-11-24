@@ -9,5 +9,5 @@ public interface CourseMapper {
 
     void insertCourse(CourseDao userDao);
 
-    List<CourseDao> listCourse();
+    List<CourseDao> listCourse(Integer orgId);
 }

@@ -18,6 +18,7 @@
     <select id="listOrg" resultMap="OrgDao">
         SELECT id, name, description, email, password, status
         FROM Organization
+        where orgId = #{orgId}
     </select>
 
     <insert id="insertOrg"

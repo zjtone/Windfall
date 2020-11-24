@@ -21,8 +21,8 @@ public class EmployeeService {
         employeeMapper.insertEmployee(EmployeeDao);
     }
 
-    public List<EmployeeDao> listEmployee(int pageNum, int pageSize){
+    public List<EmployeeDao> listEmployee(int pageNum, int pageSize, Integer orgId){
         PageHelper.startPage(pageNum, pageSize);
-        return employeeMapper.listEmployee();
+        return employeeMapper.listEmployee(orgId);
     }
 }

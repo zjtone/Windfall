@@ -10,5 +10,5 @@ public interface EmployeeMapper {
 
     void insertEmployee(EmployeeDao employeeDao);
 
-    List<EmployeeDao> listEmployee();
+    List<EmployeeDao> listEmployee(Integer orgId);
 }

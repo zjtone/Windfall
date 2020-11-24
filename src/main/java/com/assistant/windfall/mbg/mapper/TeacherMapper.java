@@ -10,5 +10,5 @@ public interface TeacherMapper {
 
     void insertTeacher(TeacherDao employeeDao);
 
-    List<TeacherDao> listTeacher();
+    List<TeacherDao> listTeacher(Integer orgId);
 }

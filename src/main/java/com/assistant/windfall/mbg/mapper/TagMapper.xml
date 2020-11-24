@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.Course//DTD Mapper 3.0//EN" "http://mybatis.Course/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.assistant.windfall.mbg.mapper.TagMapper">
+    <resultMap id="TagDao" type="com.assistant.windfall.dao.TagDao">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="obtainTagById" resultMap="TagDao">
+        SELECT id, name
+        FROM Tag
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertTag"
+            parameterType="com.assistant.windfall.dao.TagDao"
+            flushCache="true"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        INSERT INTO Tag(name)
+        VALUES(#{name})
+    </insert>
+
+    <select id="listTag" resultMap="TagDao">
+        SELECT id, name
+        FROM Tag
+    </select>
+</mapper>

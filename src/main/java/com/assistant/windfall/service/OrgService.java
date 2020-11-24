@@ -23,8 +23,8 @@ public class OrgService {
         orgMapper.insertOrg(orgDao);
     }
 
-    public List<EmployeeDao> listOrg(Integer pageNum, Integer pageSize) {
+    public List<EmployeeDao> listOrg(Integer pageNum, Integer pageSize, Integer orgId) {
         PageHelper.startPage(pageNum, pageSize);
-        return orgMapper.listOrg();
+        return orgMapper.listOrg(orgId);
     }
 }
