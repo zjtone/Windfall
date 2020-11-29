@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.assistant.windfall.mbg.mapper.UserMapper">
+    <resultMap id="UserDao" type="com.assistant.windfall.dao.UserDao">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="idCard" property="idCard" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="orgId" property="orgId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="obtainUserById" resultMap="UserDao">
+        SELECT id, username, password, type, idCard, phone, email, openid, orgId
+        FROM MyUser
+        WHERE id = #{id}
+    </select>
+
+    <select id="listUser" resultMap="UserDao">
+        SELECT id, username, password, type, idCard, phone, email, openid, orgId
+        FROM MyUser
+    </select>
+
+    <insert id="insertUser"
+            parameterType="com.assistant.windfall.dao.UserDao"
+            flushCache="true"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        INSERT INTO MyUser(username, password, type, idCard, phone, email, openid, orgId)
+        VALUES(#{username}, #{password}, #{type}, #{idCard}, #{phone}, #{email}, #{openid}, #{orgId})
+    </insert>
+</mapper>
