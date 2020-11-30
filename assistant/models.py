@@ -4,8 +4,14 @@ from django.db import models
 # Create your models here.
 class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
-    status = models.PositiveBigIntegerField(default=1)
-    org_id = models.PositiveBigIntegerField()
+    status = models.BigIntegerField(default=1)
+    org_id = models.BigIntegerField()
+    create_time = models.DateTimeField()
+    modify_time = models.DateTimeField()
+    delete_time = models.DateTimeField()
+
+    class Meta:
+        abstract = True
 
 
 class People(BaseModel):
@@ -15,7 +21,7 @@ class People(BaseModel):
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
     openid = models.CharField(max_length=200)
-    leader_id = models.PositiveBigIntegerField(default=-1)
+    leader_id = models.BigIntegerField(default=-1)
 
 
 class Org(BaseModel):
@@ -33,10 +39,16 @@ class Teacher(People):
     pass
 
 
+class User(People):
+    pass
+
+
 class Course(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     img = models.CharField(max_length=1000)
+    price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
+    capacity = models.IntegerField()
 
 
 class Tag(BaseModel):
@@ -44,10 +56,10 @@ class Tag(BaseModel):
 
 
 class CourseTagRef(BaseModel):
-    course_id = models.PositiveBigIntegerField()
-    tag_id = models.PositiveBigIntegerField()
+    course_id = models.BigIntegerField()
+    tag_id = models.BigIntegerField()
 
 
 class CourseTeacherRef(BaseModel):
-    course_id = models.PositiveBigIntegerField()
-    teacher_id = models.PositiveBigIntegerField()
+    course_id = models.BigIntegerField()
+    teacher_id = models.BigIntegerField()

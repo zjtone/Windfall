@@ -19,7 +19,7 @@ def post_teacher(request):
     teacher = create_teacher(username=data.get("username", ""), password=data.get("password", ""),
                              id_card=data.get("id_card", ""), phone=data.get("phone", ""),
                              email=data.get("email", ""), openid=data.get("openid", ""),
-                             leader_id=data.get("leader_id", ""), org_id=data.get("org_id", ""))
+                             leader_id=int(data.get("leader_id", "0")), org_id=int(data.get("org_id", "0")))
     return HttpResponse(str(teacher.id))
 
 
