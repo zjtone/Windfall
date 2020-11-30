@@ -31,7 +31,8 @@ public class EmployeeController {
     @ResponseBody
     public List<EmployeeDao> list(@RequestParam(name = "pageNum", defaultValue = "0") Integer pageNum,
                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                  @RequestParam(name = "orgId") Integer orgId) {
+                                  @RequestParam(name = "orgId") Integer orgId
+    ) {
         return employeeService.listEmployee(pageNum, pageSize, orgId);
     }
 }
