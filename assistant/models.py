@@ -6,9 +6,9 @@ class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
     status = models.BigIntegerField(default=1)
     org_id = models.BigIntegerField()
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
-    delete_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now=True)
+    modify_time = models.DateTimeField(auto_now=True)
+    delete_time = models.DateTimeField(default=None, null=True)
 
     class Meta:
         abstract = True
@@ -22,6 +22,9 @@ class People(BaseModel):
     email = models.CharField(max_length=50)
     openid = models.CharField(max_length=200)
     leader_id = models.BigIntegerField(default=-1)
+
+    class Meta:
+        abstract = True
 
 
 class Org(BaseModel):

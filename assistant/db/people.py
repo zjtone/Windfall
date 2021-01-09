@@ -1,4 +1,5 @@
 from assistant.models import Emploee, Teacher, User
+from assistant.db.base import get_by_id
 
 
 def create_people(model, username, password, id_card,
@@ -24,27 +25,13 @@ def create_user(username, password, id_card,
     return create_people(User, username, password, id_card, phone, email, openid, org_id, leader_id=leader_id)
 
 
-def get_people_by_id(model, _id):
-    people = model.objects.filter(id=_id).get()
-    return {
-        "username": people.username,
-        "password": people.password,
-        "id_card": people.id_card,
-        "phone": people.phone,
-        "email": people.email,
-        "openid": people.openid,
-        "leader_id": people.leader_id
-    }
-
-
 def get_employee_by_id(_id):
-    return get_people_by_id(Emploee, _id)
+    return get_by_id(Emploee, _id)
 
 
 def get_teacher_by_id(_id):
-    return get_people_by_id(Teacher, _id)
+    return get_by_id(Teacher, _id)
 
 
 def get_user_by_id(_id):
-    return get_people_by_id(User, _id)
-
+    return get_by_id(User, _id)

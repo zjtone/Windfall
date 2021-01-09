@@ -8,5 +8,5 @@ urlpatterns = [
     path('employee/', employee.index, name="employee"),
     path('teacher/', teacher.index, name="teacher"),
     path('organization/', org.index, name='org'),
-    path('user/', user.index, name='user')
+    path('user/', user.UserApi.as_view(), name='user')
 ]

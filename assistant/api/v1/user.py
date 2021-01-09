@@ -1,44 +1,27 @@
-import json
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
-from assistant.models import User
-from assistant.db.people import get_user_by_id, create_user
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from assistant.api.v1.serializers.user import UserSerializer
+from assistant.db.people import get_user_by_id
 
 
-def get_user(request):
-    params = request.GET
-    _id = params["id"]
-    try:
-        return JsonResponse(get_user_by_id(_id))
-    except User.DoesNotExist as e:
-        return HttpResponse(status=404)
+class UserApi(APIView):
+    def get(self, request):
+        try:
+            params = request.GET
+            if "id" in params:
+                _id = params["id"]
+                user = get_user_by_id(_id)
+                return Response(UserSerializer(user).data)
+            raise Http404
+        except Exception as e:
+            print('[UserApi]get e = {}'.format(e))
+            raise Http404
 
-
-def post_user(request):
-    data = json.loads(request.body.decode("utf-8"))
-    user = create_user(username=data.get("username", ""), password=data.get("password", ""),
-                       id_card=data.get("id_card", ""), phone=data.get("phone", ""),
-                       email=data.get("email", ""), openid=data.get("openid", ""),
-                       leader_id=int(data.get("leader_id", "0")), org_id=int(data.get("org_id", "0")))
-    return HttpResponse(str(user.id))
-
-
-def put_user(request):
-    return HttpResponse("put")
-
-
-def delete_user(request):
-    return HttpResponse("delete")
-
-
-@require_http_methods(["GET", "POST", "PUT", "DELETE"])
-def index(request):
-    if request.method == "GET":
-        return get_user(request)
-    elif request.method == "POST":
-        return post_user(request)
-    elif request.method == "PUT":
-        return put_user(request)
-    elif request.method == "DELETE":
-        return delete_user(request)
-    return HttpResponse(status=405, content="not allowed")
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
