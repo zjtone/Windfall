@@ -1,44 +1,27 @@
-import json
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
-from assistant.models import Emploee
-from assistant.db.people import get_employee_by_id, create_employee
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from assistant.api.v1.serializers.employee import EmployeeSerializer
+from assistant.db.people import get_employee_by_id
 
 
-def get_employee(request):
-    params = request.GET
-    _id = params["id"]
-    try:
-        return JsonResponse(get_employee_by_id(_id))
-    except Emploee.DoesNotExist as e:
-        return HttpResponse(status=404)
+class EmployeeApi(APIView):
+    def get(self, request):
+        try:
+            params = request.GET
+            if "id" in params:
+                _id = params["id"]
+                employee = get_employee_by_id(_id)
+                return Response(EmployeeSerializer(employee).data)
+            raise Http404
+        except Exception as e:
+            print('[EmployeeApi]get e = {}'.format(e))
+            raise Http404
 
-
-def post_employee(request):
-    data = json.loads(request.body.decode("utf-8"))
-    employee = create_employee(username=data.get("username", ""), password=data.get("password", ""),
-                               id_card=data.get("id_card", ""), phone=data.get("phone", ""),
-                               email=data.get("email", ""), openid=data.get("openid", ""),
-                               leader_id=int(data.get("leader_id", "0")), org_id=int(data.get("org_id", "0")))
-    return HttpResponse(str(employee.id))
-
-
-def put_employee(request):
-    return HttpResponse("put")
-
-
-def delete_employee(request):
-    return HttpResponse("delete")
-
-
-@require_http_methods(["GET", "POST", "PUT", "DELETE"])
-def index(request):
-    if request.method == "GET":
-        return get_employee(request)
-    elif request.method == "POST":
-        return post_employee(request)
-    elif request.method == "PUT":
-        return put_employee(request)
-    elif request.method == "DELETE":
-        return delete_employee(request)
-    return HttpResponse(status=405, content="not allowed")
+    def post(self, request):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

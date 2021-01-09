@@ -34,7 +34,7 @@ class Org(BaseModel):
     password = models.CharField(max_length=50)
 
 
-class Emploee(People):
+class Employee(People):
     pass
 
 
