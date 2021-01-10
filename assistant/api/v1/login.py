@@ -9,7 +9,6 @@ class AuthUserApi(APIView):
 
     def post(self, request):
         request.data['password'] = make_password(request.data['password'])
-        print(request.data)
         serializer = AuthUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

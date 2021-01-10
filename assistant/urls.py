@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
+from assistant.api.serializers import MyTokenObtainPairView
 from assistant.api.v1 import course, employee, teacher, user, org, login
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     # jwt
-    path('token/', TokenObtainPairView.as_view(), name='obtain_token'),
+    path('token/', MyTokenObtainPairView.as_view(), name='obtain_token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
     path('auth_user/', login.AuthUserApi.as_view(), name='auth_user'),
     # functions
