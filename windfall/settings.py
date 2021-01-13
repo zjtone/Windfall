@@ -130,7 +130,7 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     'assistant.api.backends.CustomBackend',
 ]
-JWT_AUTH = {
-    # 用户 Token 有效期
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=3)
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=3)
 }
