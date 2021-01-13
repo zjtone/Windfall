@@ -46,23 +46,25 @@ class User(People):
     pass
 
 
+class Tag(BaseModel):
+    name = models.CharField(max_length=100)
+
+
 class Course(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     img = models.CharField(max_length=1000)
     price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
     capacity = models.IntegerField()
-
-
-class Tag(BaseModel):
-    name = models.CharField(max_length=100)
+    tags = models.ManyToManyField(Tag, through='CourseTagRef')
+    teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef')
 
 
 class CourseTagRef(BaseModel):
-    course_id = models.BigIntegerField()
-    tag_id = models.BigIntegerField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
 
 
 class CourseTeacherRef(BaseModel):
-    course_id = models.BigIntegerField()
-    teacher_id = models.BigIntegerField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)

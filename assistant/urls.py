@@ -14,8 +14,7 @@ urlpatterns = [
     ## Course
     path('course/', course.CourseApi.as_view(), name="course"),
     path('tag/', course.TagApi.as_view(), name="tag"),
-    path('course/tag/', course.CourseTagApi.as_view(), name="course tag"),
-    path('course/teacher/', course.CourseTeacherApi.as_view(), name="course teacher"),
+    path('course/tag/', course.CourseTagApi.as_view(), name='course tag'),
     ## People
     path('employee/', employee.EmployeeApi.as_view(), name="employee"),
     path('teacher/', teacher.TeacherApi.as_view(), name="teacher"),
