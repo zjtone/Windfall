@@ -1,10 +1,11 @@
+from django.contrib.auth.models import User as AuthUser
 from django.db import models
 
 
 # Create your models here.
 class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
-    status = models.BigIntegerField(default=1)
+    status = models.IntegerField(default=1)
     org_id = models.BigIntegerField()
     create_time = models.DateTimeField(auto_now=True)
     modify_time = models.DateTimeField(auto_now=True)
@@ -16,7 +17,6 @@ class BaseModel(models.Model):
 
 class People(BaseModel):
     username = models.CharField(max_length=100)
-    password = models.CharField(max_length=50)
     id_card = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
@@ -68,3 +68,8 @@ class CourseTagRef(BaseModel):
 class CourseTeacherRef(BaseModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
+
+
+class ShoppingCart(BaseModel):
+    user_id = models.BigIntegerField(null=False)
+    course_id = models.BigIntegerField(null=False)

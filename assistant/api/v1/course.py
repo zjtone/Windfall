@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRef
 from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer
-from assistant.db.course import get_course_by_id, get_tag_by_id
+from assistant.db import course
 from assistant.api.apiviews import MyAPIView
 
 
@@ -13,7 +13,7 @@ class CourseApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                return Response(CourseSerializer(get_course_by_id(params["id"])).data)
+                return Response(CourseSerializer(course.get_course_by_id(params["id"])).data)
             raise Http404
         except Exception as e:
             print('[CourseApi]get e = {}'.format(e))
@@ -33,7 +33,7 @@ class TagApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                return Response(TagSerializer(get_tag_by_id(params["id"])).data)
+                return Response(TagSerializer(course.get_tag_by_id(params["id"])).data)
             raise Http404
         except Exception as e:
             print('[TagApi]get e = {}'.format(e))
@@ -89,3 +89,18 @@ class CourseTeacherApi(MyAPIView):
         if valid_list:
             return Response(valid_list, status=status.HTTP_201_CREATED)
         return Response(valid_list, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseList(MyAPIView):
+    def get(self, request):
+        params = request.data
+        if 'org_id' not in params:
+            return Response("error", status=status.HTTP_400_BAD_REQUEST)
+        org_id = params['org_id']
+        offset, limit = 0, 10
+        if 'offset' in params:
+            offset = int(params['offset'])
+        if 'limit' in params:
+            limit = min(int(params['limit']), 50)
+        return Response(CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
+                        status=status.HTTP_200_OK)
