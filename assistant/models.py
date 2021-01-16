@@ -58,6 +58,8 @@ class Course(BaseModel):
     capacity = models.IntegerField()
     tags = models.ManyToManyField(Tag, through='CourseTagRef')
     teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef')
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
 
 
 class CourseTagRef(BaseModel):

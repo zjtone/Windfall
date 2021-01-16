@@ -47,6 +47,19 @@ class TagApi(MyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class TagList(MyAPIView):
+
+    def get(self, request):
+        try:
+            params = request.data
+            org_id = params['org_id']
+            return Response(TagSerializer(course.list_tag(org_id), many=True).data,
+                            status=status.HTTP_200_OK)
+        except Exception as e:
+            print('[TagList]get e = {}'.format(e))
+            raise Http404
+
+
 class CourseTagApi(MyAPIView):
 
     def post(self, request):
@@ -102,5 +115,7 @@ class CourseList(MyAPIView):
             offset = int(params['offset'])
         if 'limit' in params:
             limit = min(int(params['limit']), 50)
-        return Response(CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
-                        status=status.HTTP_200_OK)
+        return Response({
+            "data": CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
+            "total": course.count_course(org_id)
+        }, status=status.HTTP_200_OK)

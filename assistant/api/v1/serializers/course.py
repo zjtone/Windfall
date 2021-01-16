@@ -29,4 +29,4 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'org_id', 'status',
                   'name', 'description', 'img', 'price', 'capacity',
-                  'tags', 'teachers']
+                  'tags', 'teachers', 'start_time', 'end_time']
