@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User as AuthUser
+import enum
 from django.db import models
 
 
@@ -50,6 +50,11 @@ class Tag(BaseModel):
     name = models.CharField(max_length=100)
 
 
+class Time(BaseModel):
+    start_time = models.DateTimeField(null=False)
+    end_time = models.DateTimeField(null=False)
+
+
 class Course(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
@@ -58,6 +63,7 @@ class Course(BaseModel):
     capacity = models.IntegerField()
     tags = models.ManyToManyField(Tag, through='CourseTagRef')
     teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef')
+    times = models.ManyToManyField(Time, through='CourseTimeRef')
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 
@@ -72,6 +78,15 @@ class CourseTeacherRef(BaseModel):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
 
 
+class CourseTimeRef(BaseModel):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    time = models.ForeignKey(Time, on_delete=models.CASCADE, null=True)
+
+
 class ShoppingCart(BaseModel):
+    class Type(enum.Enum):
+        INVALID = -1
+        COURSE = 0
     user_id = models.BigIntegerField(null=False)
-    course_id = models.BigIntegerField(null=False)
+    good_id = models.BigIntegerField(null=False)
+    type = models.IntegerField(default=-1)

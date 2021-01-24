@@ -11,20 +11,23 @@ urlpatterns = [
     path('auth/user/', login.AuthUserApi.as_view(), name='auth_user'),
     # functions
     path('index/', views.index, name='index'),
-    ## Course
+    # Course
     path('course/', course.CourseApi.as_view(), name="course"),
     path('tag/', course.TagApi.as_view(), name="tag"),
     path('tag/list/', course.TagList.as_view(), name='tag list'),
     path('course/tag/', course.CourseTagApi.as_view(), name='course tag'),
+    path('course/teacher/', course.CourseTeacherApi.as_view(), name='course teacher'),
     path('course/list/', course.CourseList.as_view(), name='course list'),
-    ## People
+    path('course/time/', course.CourseTimeRefApi.as_view(), name='course time'),
+    path('time/', course.TimeApi.as_view(), name='time'),
+    # People
     path('employee/', employee.EmployeeApi.as_view(), name="employee"),
     path('teacher/', teacher.TeacherApi.as_view(), name="teacher"),
     path('user/', user.UserApi.as_view(), name='user'),
-    ## Organization
+    # Organization
     path('org/', org.OrgApi.as_view(), name='org'),
-    ## Shopping
+    # Shopping
     path('shopping/', shopping.ShoppingCartApi.as_view(), name='shopping'),
-    ## File
+    # File
     path('file/', files.FileApi.as_view(), name='file')
 ]

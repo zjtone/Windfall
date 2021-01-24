@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRef
-from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer
+from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer, CourseTimeRefSerializer, TimeSerializer
 from assistant.db import course
 from assistant.api.apiviews import MyAPIView
 
@@ -119,3 +119,21 @@ class CourseList(MyAPIView):
             "data": CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
             "total": course.count_course(org_id)
         }, status=status.HTTP_200_OK)
+
+
+class CourseTimeRefApi(MyAPIView):
+    def post(self, request):
+        serializer = CourseTimeRefSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TimeApi(MyAPIView):
+    def post(self, request):
+        serializer = TimeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
