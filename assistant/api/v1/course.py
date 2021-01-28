@@ -117,10 +117,10 @@ class CourseList(MyAPIView):
             return Response("error", status=status.HTTP_400_BAD_REQUEST)
         org_id = params['org_id']
         offset, limit = 0, 10
-        if 'offset' in params:
-            offset = int(params['offset'])
-        if 'limit' in params:
-            limit = min(int(params['limit']), 50)
+        if 'pageIndex' in params:
+            offset = int(params['pageIndex'])
+        if 'pageSize' in params:
+            limit = min(int(params['pageSize']), 50)
         return Response({
             "data": CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
             "total": course.count_course(org_id)
