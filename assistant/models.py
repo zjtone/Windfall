@@ -57,13 +57,13 @@ class Time(BaseModel):
 
 class Course(BaseModel):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, null=True)
     img = models.CharField(max_length=1000)
     price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
     capacity = models.IntegerField()
-    tags = models.ManyToManyField(Tag, through='CourseTagRef')
-    teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef')
-    times = models.ManyToManyField(Time, through='CourseTimeRef')
+    tags = models.ManyToManyField(Tag, through='CourseTagRef', null=True)
+    teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef', null=True)
+    times = models.ManyToManyField(Time, through='CourseTimeRef', null=True)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 

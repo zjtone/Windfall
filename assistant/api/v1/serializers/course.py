@@ -28,16 +28,16 @@ class CourseTimeRefSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
-    teachers = TeacherSerializer(many=True)
-    times = CourseTimeRefSerializer(many=True)
+    tags = TagSerializer(many=True, required=False, read_only=True)
+    teachers = TeacherSerializer(many=True, required=False, read_only=True)
+    times = CourseTimeRefSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = Course
         fields = ['id', 'org_id', 'status',
                   'name', 'description', 'img', 'price', 'capacity',
                   'tags', 'teachers', 'start_time', 'end_time',
-                  'times']
+                  'times', 'create_time', 'modify_time']
 
 
 class TimeSerializer(serializers.ModelSerializer):

@@ -2,7 +2,8 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRef
-from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer, CourseTimeRefSerializer, TimeSerializer
+from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer, CourseTimeRefSerializer, \
+    TimeSerializer, CourseTagSerializer, CourseTeacherSerializer
 from assistant.db import course
 from assistant.api.apiviews import MyAPIView
 
@@ -20,6 +21,11 @@ class CourseApi(MyAPIView):
             raise Http404
 
     def post(self, request):
+        refs = {
+            "tag": CourseTagSerializer,
+            "teacher": CourseTeacherSerializer,
+            "time": CourseTimeRefSerializer
+        }
         serializer = CourseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

@@ -11,13 +11,13 @@ class UploadFileForm(forms.Form):
 
 
 def gen_name(name):
-    return "./upload/" + str(random.randint(1000, 1000000)) + "_" + str(time.time()) + "_" + name
+    return str(random.randint(1000, 1000000)) + "_" + str(time.time()) + "_" + name
 
 
 def handle_uploaded_file(name, f):
     filename = gen_name(name)
     print("filename = {}".format(filename))
-    with open(filename, 'wb+') as destination:
+    with open("./upload/" + filename, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
     return filename
