@@ -32,6 +32,19 @@ class CourseApi(MyAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request):
+        try:
+            params = request.data
+            if "id" in params:
+                course = course.get_course_by_id(params["id"])
+                serializer = CourseSerializer(course, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response("", status=status.HTTP_200_OK)
+            raise Http404
+        except Exception as e:
+            raise Http404
+
 
 class TagApi(MyAPIView):
 
