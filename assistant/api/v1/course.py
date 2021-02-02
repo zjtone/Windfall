@@ -36,13 +36,16 @@ class CourseApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                course = course.get_course_by_id(params["id"])
-                serializer = CourseSerializer(course, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response("", status=status.HTTP_200_OK)
+                update_course = request.data
+                exist_course = course.get_course_by_id(params["id"])
+                for key in update_course:
+                    if hasattr(exist_course, key):
+                        setattr(exist_course, key, update_course[key])
+                exist_course.save()
+                return Response("", status=status.HTTP_200_OK)
             raise Http404
         except Exception as e:
+            print("e ", e)
             raise Http404
 
 

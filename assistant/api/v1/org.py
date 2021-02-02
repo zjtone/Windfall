@@ -30,8 +30,8 @@ class OrgApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                org = get_org_by_id(params["id"])
-                serializer = OrgSerializer(org, data=request.data)
+                _org = get_org_by_id(params["id"])
+                serializer = OrgSerializer(_org, data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response("", status=status.HTTP_200_OK)
