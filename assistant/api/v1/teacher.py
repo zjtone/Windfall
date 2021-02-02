@@ -30,11 +30,13 @@ class TeacherApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                teacher = people.get_teacher_by_id(params["id"])
-                serializer = CourseSerializer(teacher, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response("", status=status.HTTP_200_OK)
+                update_teacher = request.data
+                exist_teacher = people.get_teacher_by_id(params["id"])
+                for key in update_teacher:
+                    if hasattr(exist_teacher, key):
+                        setattr(exist_teacher, key, update_teacher[key])
+                exist_teacher.save()
+                return Response("", status=status.HTTP_200_OK)
             raise Http404
         except Exception as e:
             raise Http404

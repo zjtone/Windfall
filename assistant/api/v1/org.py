@@ -30,11 +30,13 @@ class OrgApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                _org = get_org_by_id(params["id"])
-                serializer = OrgSerializer(_org, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response("", status=status.HTTP_200_OK)
+                update_org = request.data
+                exist_org = get_org_by_id(params["id"])
+                for key in update_org:
+                    if hasattr(exist_org, key):
+                        setattr(exist_org, key, update_org[key])
+                exist_org.save()
+                return Response("", status=status.HTTP_200_OK)
             raise Http404
         except Exception as e:
             raise Http404

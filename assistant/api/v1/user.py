@@ -30,11 +30,13 @@ class UserApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                user = people.get_user_by_id(params["id"])
-                serializer = UserSerializer(user, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response("", status=status.HTTP_200_OK)
+                update_user = request.data
+                exist_user = people.get_user_by_id(params["id"])
+                for key in update_user:
+                    if hasattr(exist_user, key):
+                        setattr(exist_user, key, update_user[key])
+                exist_user.save()
+                return Response("", status=status.HTTP_200_OK)
             raise Http404
         except Exception as e:
             raise Http404

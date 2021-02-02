@@ -30,11 +30,13 @@ class EmployeeApi(MyAPIView):
         try:
             params = request.data
             if "id" in params:
-                employee = people.get_employee_by_id(params["id"])
-                serializer = EmployeeSerializer(employee, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response("", status=status.HTTP_200_OK)
+                update_employee = request.data
+                exist_employee = people.get_employee_by_id(params["id"])
+                for key in update_employee:
+                    if hasattr(exist_employee, key):
+                        setattr(exist_employee, key, update_employee[key])
+                exist_employee.save()
+                return Response("", status=status.HTTP_200_OK)
             raise Http404
         except Exception as e:
             raise Http404
