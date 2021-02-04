@@ -16,6 +16,7 @@ class BaseModel(models.Model):
 
 
 class People(BaseModel):
+    img = models.CharField(max_length=1000, null=True)
     username = models.CharField(max_length=100)
     id_card = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
@@ -28,6 +29,7 @@ class People(BaseModel):
 
 
 class Org(BaseModel):
+    img = models.CharField(max_length=1000, null=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     email = models.CharField(max_length=50)
