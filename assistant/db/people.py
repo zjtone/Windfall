@@ -1,4 +1,4 @@
-from assistant.models import Employee, Teacher, User
+from assistant.models import Employee, Teacher, User, AuthUserRef
 from assistant.db.base import get_by_id
 
 
@@ -12,6 +12,10 @@ def get_teacher_by_id(_id):
 
 def get_user_by_id(_id):
     return get_by_id(User, _id)
+
+
+def get_people_by_auth_id(auth_id):
+    return AuthUserRef.objects.filter(auth_id=auth_id).get()
 
 
 def list_employee(org_id, offset, limit):

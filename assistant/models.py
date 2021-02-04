@@ -28,6 +28,18 @@ class People(BaseModel):
         abstract = True
 
 
+class AuthUserRef(BaseModel):
+    class Type(enum.Enum):
+        INVALID = -1
+        USER = 0
+        TEACHER = 1
+        EMPLOYEE = 2
+
+    auth_id = models.BigIntegerField()
+    type = models.IntegerField(default=-1)
+    org_id = models.BigIntegerField()
+
+
 class Org(BaseModel):
     img = models.CharField(max_length=1000, null=True)
     name = models.CharField(max_length=100)
