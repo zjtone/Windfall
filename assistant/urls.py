@@ -22,12 +22,16 @@ urlpatterns = [
     path('time/', course.TimeApi.as_view(), name='time'),
     # People
     path('employee/', employee.EmployeeApi.as_view(), name="employee"),
+    path('employee/list/', employee.EmployeeList.as_view(), name='employee list'),
     path('teacher/', teacher.TeacherApi.as_view(), name="teacher"),
+    path('teacher/list/', teacher.TeacherList.as_view(), name='teacher list'),
     path('user/', user.UserApi.as_view(), name='user'),
+    path('user/list/', user.UserList.as_view(), name='user list'),
     # Organization
     path('org/', org.OrgApi.as_view(), name='org'),
     # Shopping
     path('shopping/', shopping.ShoppingCartApi.as_view(), name='shopping'),
+    path('shopping/list/', shopping.ShoppingCartList.as_view(), name='shopping'),
     # File
     path('file/', files.FileApi.as_view(), name='file')
 ]
