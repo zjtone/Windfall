@@ -21,7 +21,7 @@ class AuthUserApi(MyAPIView):
             })
             if ref_serializer.is_valid():
                 ref_serializer.save()
-                return Response("success", status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(ref_serializer.errors,
                                 status=status.HTTP_400_BAD_REQUEST)

@@ -16,7 +16,7 @@ class OrgApi(MyAPIView):
                 return Response(OrgSerializer(org).data)
             raise Http404
         except Exception as e:
-            print('[UserApi]get e = {}'.format(e))
+            print('[OrgApi]get e = {}'.format(e))
             raise Http404
 
     def post(self, request):
