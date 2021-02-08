@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
+    img = models.CharField(max_length=1000, null=True)
     status = models.IntegerField(default=1)
     org_id = models.BigIntegerField()
     create_time = models.DateTimeField(auto_now=True)
@@ -16,7 +17,6 @@ class BaseModel(models.Model):
 
 
 class People(BaseModel):
-    img = models.CharField(max_length=1000, null=True)
     username = models.CharField(max_length=100)
     id_card = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
@@ -41,7 +41,6 @@ class AuthUserRef(BaseModel):
 
 
 class Org(BaseModel):
-    img = models.CharField(max_length=1000, null=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     email = models.CharField(max_length=50)
@@ -72,7 +71,6 @@ class Time(BaseModel):
 class Course(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, null=True)
-    img = models.CharField(max_length=1000)
     price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
     capacity = models.IntegerField()
     tags = models.ManyToManyField(Tag, through='CourseTagRef', null=True)
