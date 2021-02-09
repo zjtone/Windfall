@@ -143,8 +143,11 @@ class CourseList(MyAPIView):
             offset = int(params['pageIndex'])
         if 'pageSize' in params:
             limit = min(int(params['pageSize']), 50)
+        status = None
+        if 'status' in params and params['status'] != -1:
+            status = params['status']
         return Response({
-            "data": CourseSerializer(course.list_course(org_id, offset, limit), many=True).data,
+            "data": CourseSerializer(course.list_course(org_id, offset, limit, status), many=True).data,
             "total": course.count_course(org_id)
         }, status=status.HTTP_200_OK)
 

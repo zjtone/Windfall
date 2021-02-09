@@ -57,7 +57,10 @@ class EmployeeList(MyAPIView):
             offset = int(params['pageIndex'])
         if 'pageSize' in params:
             limit = min(int(params['pageSize']), 50)
+        status = None
+        if 'status' in params and params['status'] != -1:
+            status = params['status']
         return Response({
-            "data": EmployeeSerializer(people.list_employee(org_id, offset, limit), many=True).data,
+            "data": EmployeeSerializer(people.list_employee(org_id, offset, limit, status), many=True).data,
             "total": people.count_employee(org_id)
         }, status=status.HTTP_200_OK)

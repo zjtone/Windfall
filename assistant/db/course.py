@@ -13,8 +13,11 @@ def get_tag_by_id(_id):
     return Tag.objects.filter(id=_id).get()
 
 
-def list_course(org_id, offset, limit):
-    return Course.objects.filter(org_id=org_id).all()[(offset-1) * limit:offset * limit]
+def list_course(org_id, offset, limit, status=None):
+    course_list = Course.objects.filter(org_id=org_id)
+    if status:
+        course_list = course_list.filter(status=status)
+    return course_list.all()[(offset-1) * limit:offset * limit]
 
 
 def count_course(org_id, status=1):
