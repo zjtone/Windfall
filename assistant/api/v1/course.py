@@ -21,24 +21,30 @@ class CourseApi(MyAPIView):
             raise Http404
 
     def post(self, request):
+        params = request.data
+        if "id" in params:
+            return CourseApi.update(request)
         refs = {
             "tag": CourseTagSerializer,
             "teacher": CourseTeacherSerializer,
             "time": CourseTimeRefSerializer
         }
-        serializer = CourseSerializer(data=request.data)
+        serializer = CourseSerializer(data=params)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request):
+    @staticmethod
+    def update(request):
         try:
             params = request.data
             if "id" in params:
                 update_course = request.data
                 exist_course = course.get_course_by_id(params["id"])
                 for key in update_course:
+                    if key == "tags" or key == "teachers" or key == "times":
+                        continue
                     if hasattr(exist_course, key):
                         setattr(exist_course, key, update_course[key])
                 exist_course.save()

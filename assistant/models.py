@@ -21,7 +21,7 @@ class People(BaseModel):
     id_card = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
-    openid = models.CharField(max_length=200)
+    openid = models.CharField(max_length=200, default="")
     leader_id = models.BigIntegerField(default=-1)
 
     class Meta:

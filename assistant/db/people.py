@@ -20,7 +20,7 @@ def get_people_by_auth_id(auth_id):
 
 def list_employee(org_id, offset, limit):
     return Employee.objects.filter(org_id=org_id) \
-               .filter(id__gt=max((offset - 1) * limit + 1, 0)).all()[:limit]
+               .filter(id__gt=max(offset, 0)).all()[:limit]
 
 
 def count_employee(org_id, status=1):
@@ -29,7 +29,7 @@ def count_employee(org_id, status=1):
 
 def list_teacher(org_id, offset, limit):
     return Teacher.objects.filter(org_id=org_id) \
-               .filter(id__gt=max((offset - 1) * limit + 1, 0)).all()[:limit]
+               .filter(id__gt=max(offset, 0)).all()[:limit]
 
 
 def count_teacher(org_id, status=1):
@@ -38,7 +38,7 @@ def count_teacher(org_id, status=1):
 
 def list_user(org_id, offset, limit):
     return User.objects.filter(org_id=org_id) \
-               .filter(id__gt=max((offset - 1) * limit + 1, 0)).all()[:limit]
+               .filter(id__gt=max(offset, 0)).all()[:limit]
 
 
 def count_user(org_id, status=1):

@@ -20,13 +20,17 @@ class OrgApi(MyAPIView):
             raise Http404
 
     def post(self, request):
+        params = request.data
+        if "id" in params:
+            return OrgApi.update(request)
         serializer = OrgSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request):
+    @staticmethod
+    def update(request):
         try:
             params = request.data
             if "id" in params:
