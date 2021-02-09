@@ -10,8 +10,7 @@ def get_shopping_cart(user_id, org_id, offset=0, limit=10):
 
 
 def list_shopping_cart(org_id, offset, limit):
-    return ShoppingCart.objects.filter(org_id=org_id) \
-               .filter(id__gt=max((offset - 1) * limit + 1, 0)).all()[:limit]
+    return ShoppingCart.objects.filter(org_id=org_id).all()[(offset-1) * limit:offset * limit]
 
 
 def count_shopping_cart(org_id, status=1):
