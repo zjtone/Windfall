@@ -52,15 +52,16 @@ class UserList(MyAPIView):
         if 'org_id' not in params:
             return Response("error", status=status.HTTP_400_BAD_REQUEST)
         org_id = params['org_id']
-        offset, limit = 0, 10
+        offset, limit = 1, 10
         if 'pageIndex' in params:
             offset = int(params['pageIndex'])
         if 'pageSize' in params:
             limit = min(int(params['pageSize']), 50)
-        status = None
-        if 'status' in params and params['status'] != -1:
-            status = params['status']
+        data_status = None
+        if 'status' in params:
+            data_status = int(params['status'])
+            data_status = data_status if data_status > 0 else None
         return Response({
-            "data": UserSerializer(people.list_user(org_id, offset, limit, status), many=True).data,
-            "total": people.count_user(org_id)
+            "data": UserSerializer(people.list_user(org_id, offset, limit, data_status), many=True).data,
+            "total": people.count_user(org_id, data_status)
         }, status=status.HTTP_200_OK)

@@ -57,10 +57,11 @@ class TeacherList(MyAPIView):
             offset = int(params['pageIndex'])
         if 'pageSize' in params:
             limit = min(int(params['pageSize']), 50)
-        status = None
-        if 'status' in params and params['status'] != -1:
-            status = params['status']
+        data_status = None
+        if 'status' in params:
+            data_status = int(params['status'])
+            data_status = data_status if data_status > 0 else None
         return Response({
-            "data": TeacherSerializer(people.list_teacher(org_id, offset, limit, status), many=True).data,
-            "total": people.count_teacher(org_id)
+            "data": TeacherSerializer(people.list_teacher(org_id, offset, limit, data_status), many=True).data,
+            "total": people.count_teacher(org_id, data_status)
         }, status=status.HTTP_200_OK)
