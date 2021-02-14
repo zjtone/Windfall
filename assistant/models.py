@@ -73,32 +73,28 @@ class Course(BaseModel):
     description = models.CharField(max_length=1000, null=True)
     price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
     capacity = models.IntegerField()
-    # tags = models.ManyToManyField(Tag, through='CourseTagRef', null=True)
-    # teachers = models.ManyToManyField(Teacher, through='CourseTeacherRef', null=True)
-    # times = models.ManyToManyField(Time, through='CourseTimeRef', null=True)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 
 
 class CourseTagRef(BaseModel):
-    # course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-    # tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     course_id = models.BigIntegerField(default=-1)
     tag_id = models.BigIntegerField(default=-1)
 
 
 class CourseTeacherRef(BaseModel):
-    # course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-    # teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     course_id = models.BigIntegerField(default=-1)
     teacher_id = models.BigIntegerField(default=-1)
 
 
 class CourseTimeRef(BaseModel):
-    # course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-    # time = models.ForeignKey(Time, on_delete=models.CASCADE, null=True)
     course_id = models.BigIntegerField(default=-1)
     time_id = models.BigIntegerField(default=-1)
+
+
+class CourseUserRef(BaseModel):
+    course_id = models.BigIntegerField(default=-1)
+    user_id = models.BigIntegerField(default=-1)
 
 
 class ShoppingCart(BaseModel):

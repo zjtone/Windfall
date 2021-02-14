@@ -1,4 +1,4 @@
-from assistant.models import Employee, Teacher, User, AuthUserRef
+from assistant.models import Employee, Teacher, User, AuthUserRef, CourseUserRef
 from assistant.db.base import get_by_id
 
 
@@ -64,6 +64,21 @@ def list_user(org_id, offset, limit, status=None):
         data_list = data_list.filter(status=status)
     return data_list.all()[(offset-1) * limit:offset * limit]
 
+
+def list_user_with_course(course_id, offset, limit, status=1):
+    refs = CourseUserRef.objects.filter(course_id=course_id)
+    if status:
+        refs = refs.filter(status=status)
+    refs = refs.all()[(offset-1) * limit:offset * limit]
+    return list_user_by_id([ref["user_id"] for ref in refs])
+
+
+def count_user_with_course(course_id, status=1):
+    refs = CourseUserRef.objects.filter(course_id=course_id)
+    if status:
+        refs = refs.filter(status=status)
+    return refs.count()
+    
 
 def count_user(org_id, status=1):
     data_list = User.objects.filter(org_id=org_id)

@@ -5,6 +5,7 @@ from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRe
 from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer, CourseTimeRefSerializer, \
     TimeSerializer, CourseTagSerializer, CourseTeacherSerializer
 from assistant.api.v1.serializers.teacher import TeacherSerializer
+from assistant.api.v1.serializers.user import UserSerializer
 from assistant.db import course, people
 from assistant.api.apiviews import MyAPIView
 
@@ -168,9 +169,22 @@ class CourseList(MyAPIView):
         if 'status' in params:
             data_status = int(params['status'])
             data_status = data_status if data_status > 0 else None
-        course_list = course.list_course(org_id, offset, limit, data_status)
+        # 返回用户的课程列表
+        if "user_id" in params:
+            return Response({
+                "data": UserSerializer(
+                    course.list_course_with_user(params["user_id"], offset, limit, data_status), many=True).data,
+                "total": course.count_course_with_user(params["user_id"], data_status)
+            })
+        # 返回教师的课程列表
+        if "teacher_id" in params:
+            return Response({
+                "data": UserSerializer(
+                    course.list_course_with_teacher(params["teacher_id"], offset, limit, data_status), many=True).data,
+                "total": course.count_course_with_teacher(params["teacher_id"], data_status)
+            })
         return Response({
-            "data": CourseSerializer(course_list, many=True).data,
+            "data": CourseSerializer(course.list_course(org_id, offset, limit, data_status), many=True).data,
             "total": course.count_course(org_id, data_status)
         }, status=status.HTTP_200_OK)
 

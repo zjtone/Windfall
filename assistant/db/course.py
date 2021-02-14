@@ -1,4 +1,4 @@
-from assistant.models import Course, Tag, CourseTagRef, CourseTeacherRef, CourseTimeRef, Time
+from assistant.models import Course, Tag, CourseTagRef, CourseTeacherRef, CourseTimeRef, Time, CourseUserRef
 from assistant.api.v1.serializers.course import CourseTagSerializer
 
 
@@ -46,6 +46,36 @@ def count_course(org_id, status=1):
     if status:
         course_list = course_list.filter(status=status)
     return course_list.count()
+
+
+def list_course_with_user(user_id, offset, limit, status=None):
+    refs = CourseUserRef.objects.filter(user_id=user_id)
+    if status:
+        refs = refs.filter(status=status)
+    refs = refs.all()[(offset-1) * limit:offset * limit]
+    return list_course_by_id([ref["course_id"] for ref in refs])
+
+
+def count_course_with_user(user_id, status=None):
+    refs = CourseUserRef.objects.filter(user_id=user_id)
+    if status:
+        refs = refs.filter(status=status)
+    return refs.count()
+
+
+def list_course_with_teacher(teacher_id, offset, limit, status=None):
+    refs = CourseTeacherRef.objects.filter(teacher_id=teacher_id)
+    if status:
+        refs = refs.filter(status=status)
+    refs = refs.all()[(offset-1) * limit:offset * limit]
+    return list_course_by_id([ref["course_id"] for ref in refs])
+
+
+def count_course_with_teacher(teacher_id, status=None):
+    refs = CourseTeacherRef.objects.filter(teacher_id=teacher_id)
+    if status:
+        refs = refs.filter(status=status)
+    return refs.count()
 
 
 def list_tag(org_id, status=1):

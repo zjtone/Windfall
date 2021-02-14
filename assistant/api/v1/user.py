@@ -61,6 +61,14 @@ class UserList(MyAPIView):
         if 'status' in params:
             data_status = int(params['status'])
             data_status = data_status if data_status > 0 else None
+        # 返回课程对应的用户列表
+        if 'course_id' in params:
+            return Response({
+                "data": UserSerializer(
+                    people.list_user_with_course(params["course_id"], offset, limit, data_status), many=True).data,
+                "total": people.count_user_with_course(params["course_id"], data_status)
+            })
+        # 没有过滤条件，返回用户列表
         return Response({
             "data": UserSerializer(people.list_user(org_id, offset, limit, data_status), many=True).data,
             "total": people.count_user(org_id, data_status)

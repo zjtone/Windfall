@@ -6,4 +6,4 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCart
         fields = ['id', 'org_id', 'status',
-                  'user_id', 'course_id']
+                  'user_id', 'good_id', 'type']
