@@ -60,13 +60,15 @@ class OrderApi(MyAPIView):
             for good in params["data"]:
                 if good["type"] == 0:
                     tmp_course = course.get_course_by_id(good["good_id"])
-                    if tmp_course["used"] >= tmp_course["capacity"]:
+                    if tmp_course.used >= tmp_course.capacity:
                         transaction.rollback()
                         return Response({
                             "good_id": good["good_id"],
                             "type": good["type"],
                             "error": "课程容量不足"
                         }, status=status.HTTP_400_BAD_REQUEST)
+                    tmp_course.used += 1
+                    tmp_course.save()
                 ref_serializer = OrderRefSerializer(data={"good_id": good["good_id"], \
                     "type": good["type"], "org_id": params["org_id"]})
                 if ref_serializer.is_valid():

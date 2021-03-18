@@ -31,9 +31,10 @@ class People(BaseModel):
 class AuthUserRef(BaseModel):
     class Type(enum.Enum):
         INVALID = -1
-        USER = 0
-        TEACHER = 1
-        EMPLOYEE = 2
+        USER = 0  # 用户
+        TEACHER = 1  # 教师
+        EMPLOYEE = 2  # 员工
+        ORG = 3  # 机构
 
     auth_id = models.BigIntegerField()
     type = models.IntegerField(default=-1)
