@@ -72,6 +72,7 @@ class Course(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, null=True)
     price = models.IntegerField()  # 以分为单位，不使用小数，防止浮点数误差。
+    used = models.IntegerField(default=0)  # 已经卖出的数量
     capacity = models.IntegerField()
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
@@ -102,5 +103,19 @@ class ShoppingCart(BaseModel):
         INVALID = -1
         COURSE = 0
     user_id = models.BigIntegerField(null=False)
+    good_id = models.BigIntegerField(null=False)
+    type = models.IntegerField(default=-1)
+
+
+class Order(BaseModel):
+    user_id = models.BigIntegerField(null=False)
+    pay_time = models.DateTimeField(null=True, default=None)  # 是否已支付，为空则未支付，否则表示已支付
+
+
+class OrderRef(BaseModel):
+    class Type(enum.Enum):
+        INVALID = -1
+        COURSE = 0
+    order_id = models.BigIntegerField(null=False)
     good_id = models.BigIntegerField(null=False)
     type = models.IntegerField(default=-1)
