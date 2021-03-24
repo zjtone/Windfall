@@ -1,6 +1,7 @@
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from assistant.api.v1.serializers.org import OrgSerializer
 from assistant.db.org import get_org_by_id
 from assistant.api.apiviews import MyAPIView
@@ -23,11 +24,7 @@ class OrgApi(MyAPIView):
         params = request.data
         if "id" in params:
             return OrgApi.update(request)
-        serializer = OrgSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def update(request):
@@ -44,3 +41,18 @@ class OrgApi(MyAPIView):
             raise Http404
         except Exception as e:
             raise Http404
+
+
+class CreateOrg(MyAPIView):
+    permission_classes = [AllowAny]  # 权限
+    authentication_classes = []  # 身份验证
+
+    def post(self, request):
+        params = request.data
+        if "id" in params:
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
+        serializer = OrgSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

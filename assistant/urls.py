@@ -29,6 +29,7 @@ urlpatterns = [
     path('user/list/', user.UserList.as_view(), name='user list'),
     # Organization
     path('org/', org.OrgApi.as_view(), name='org'),
+    path('org/create/', org.CreateOrg.as_view(), name='create org'),  # 不规范的写法，暂时留一个
     # Shopping
     path('shopping/', shopping.ShoppingCartApi.as_view(), name='shopping'),
     path('shopping/list/', shopping.ShoppingCartList.as_view(), name='shopping'),
