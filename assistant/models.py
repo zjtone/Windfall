@@ -44,8 +44,8 @@ class AuthUserRef(BaseModel):
 class Org(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    email = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
+    email = models.CharField(max_length=128)
+    password = models.CharField(max_length=128)
 
 
 class Employee(People):

@@ -49,19 +49,20 @@ class OrderApi(MyAPIView):
                 or len(params["data"]) == 0 or len(params["data"]) > 10:
             return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
         with transaction.atomic():
+            save_point = transaction.savepoint()
             # 创建订单
             order_serializer = OrderSerializer(data={"user_id": params["user_id"], "org_id": params["org_id"]})
             if order_serializer.is_valid():
                 order_serializer.save()
             else:
-                transaction.rollback()
+                transaction.savepoint_rollback(save_point)
                 return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             # 订单中增加商品
             for good in params["data"]:
                 if good["type"] == 0:
                     tmp_course = course.get_course_by_id(good["good_id"])
                     if tmp_course.used >= tmp_course.capacity:
-                        transaction.rollback()
+                        transaction.savepoint_rollback(save_point)
                         return Response({
                             "good_id": good["good_id"],
                             "type": good["type"],
@@ -74,12 +75,13 @@ class OrderApi(MyAPIView):
                 if ref_serializer.is_valid():
                     ref_serializer.save()
                 else:
-                    transaction.rollback()
+                transaction.savepoint_rollback(save_point)
                     return Response({
                         "good_id": good["good_id"],
                         "type": good["type"],
                         "error": ref_serializer.errors
                     }, status=status.HTTP_400_BAD_REQUEST)
+            transaction.savepoint_commit(save_point)
             return Response(order_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
