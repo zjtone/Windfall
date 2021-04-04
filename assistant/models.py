@@ -49,11 +49,11 @@ class Org(BaseModel):
 
 
 class Employee(People):
-    pass
+    description = models.CharField(max_length=1000, default="……")
 
 
 class Teacher(People):
-    pass
+    description = models.CharField(max_length=1000, default="……")
 
 
 class User(People):

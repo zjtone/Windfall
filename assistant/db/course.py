@@ -106,7 +106,7 @@ def course_tags(course_id, tag_ids, org_id):
         if serializer.is_valid():
             serializer.save()
         else:
-            print(serializer.errors)
+            raise Exception(str(serializer.errors))
     # delete
     for tag_id in old_ids - set(tag_ids):
         old_course_tag = get_course_tag_ref(course_id, tag_id)
@@ -135,7 +135,7 @@ def course_teachers(course_id, teacher_ids, org_id):
         if serializer.is_valid():
             serializer.save()
         else:
-            print(serializer.errors)
+            raise Exception(str(serializer.errors))
     # delete
     for teacher_id in old_ids - set(teacher_ids):
         old_course_teacher = get_course_teacher_ref(course_id, teacher_id)
@@ -164,7 +164,7 @@ def course_times(course_id, time_ids, org_id):
         if serializer.is_valid():
             serializer.save()
         else:
-            print(serializer.errors)
+            raise Exception(str(serializer.errors))
     # delete
     for time_id in old_ids - set(time_ids):
         old_course_time = get_course_time_ref(course_id, time_id)

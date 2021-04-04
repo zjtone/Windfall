@@ -36,20 +36,25 @@ class CourseApi(MyAPIView):
         params = request.data
         if "id" in params:
             return CourseApi.update(request)
-        refs = {
-            "tag": CourseTagSerializer,
-            "teacher": CourseTeacherSerializer,
-            "time": CourseTimeRefSerializer
-        }
+        tags, teachers, times = None, None, None
+        if "tags" in params:
+            tags = params["tags"]
+            del params["tags"]
+        if "teachers" in params:
+            teachers = params["teachers"]
+            del params["teachers"]
+        if "times" in params:
+            times = params["times"]
+            del params["times"]
         serializer = CourseSerializer(data=params)
         if serializer.is_valid():
             serializer.save()
-            if "tags" in params:
-                course.course_tags(serializer.data["id"], params["tags"], serializer.data["org_id"])
-            if "teachers" in params:
-                course.course_teachers(serializer.data["id"], params["teachers"], serializer.data["org_id"])
-            if "times" in params:
-                course.course_times(serializer.data["id"], params["times"], serializer.data["org_id"])
+            if tags is not None:
+                course.course_tags(serializer.data["id"], tags, serializer.data["org_id"])
+            if teachers is not None:
+                course.course_teachers(serializer.data["id"], teachers, serializer.data["org_id"])
+            if times is not None:
+                course.course_times(serializer.data["id"], times, serializer.data["org_id"])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

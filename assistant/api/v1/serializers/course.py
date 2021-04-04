@@ -35,9 +35,9 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'org_id', 'status',
-                  'name', 'description', 'img', 'price', 'capacity',
-                  'tags', 'teachers', 'start_time', 'end_time',
-                  'times', 'create_time', 'modify_time']
+                'name', 'description', 'img', 'price', 'capacity',
+                'tags', 'teachers', 'start_time', 'end_time',
+                'times', 'create_time', 'modify_time']
 
 
 class TimeSerializer(serializers.ModelSerializer):
