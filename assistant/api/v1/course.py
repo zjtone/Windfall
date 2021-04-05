@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRef
 from assistant.api.v1.serializers.course import CourseSerializer, TagSerializer, CourseTimeRefSerializer, \
-    TimeSerializer, CourseTagSerializer, CourseTeacherSerializer
+    TimeSerializer
 from assistant.api.v1.serializers.teacher import TeacherSerializer
 from assistant.api.v1.serializers.user import UserSerializer
 from assistant.db import course, people

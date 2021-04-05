@@ -14,6 +14,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             data['username'] = self.user.username
             auth_user_ref = get_people_by_auth_id(self.user.id)
             data['org_id'] = auth_user_ref.org_id
+            data['auth_id'] = self.user.id
             data['type'] = auth_user_ref.type
             return data
         except:

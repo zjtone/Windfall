@@ -32,11 +32,10 @@ class ShoppingCartApi(MyAPIView):
         if "course_id" in params:
             return Response({
                 "data": CourseSerializer(
-                    shopping.list_shopping_cart_user_with_course(
-                        user_id=params['course_id'], org_id=params['org_id'], 
+                    shopping.list_shopping_cart_user_with_course(course_id=params['course_id'], org_id=params['org_id'],
                         offset=offset, limit=limit), many=True).data,
                 "total": shopping.count_shopping_cart_user_with_course(
-                    user_id=params['course_id'], org_id=params['org_id'])
+                    course_id=params['course_id'], org_id=params['org_id'])
             }, status=status.HTTP_200_OK)
         return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,6 +43,9 @@ class ShoppingCartApi(MyAPIView):
         params = request.data
         if "id" in params:
             return ShoppingCartApi.update(request)
+        if shopping.get_shopping_cart(params['good_id'], params['user_id'],
+                                      params['type'], params['org_id']) is not None:
+            return Response('exists', status=status.HTTP_200_OK)
         serializer = ShoppingCartSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -62,9 +64,10 @@ class ShoppingCartApi(MyAPIView):
                         setattr(exist_shopping_cart, key, update_shopping_cart[key])
                 exist_shopping_cart.save()
                 return Response("", status=status.HTTP_200_OK)
-            raise Http404
+            return Response("errors", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            raise Http404
+            print(e)
+            return Response("errors", status=status.HTTP_400_BAD_REQUEST)
 
 
 class ShoppingCartList(MyAPIView):
