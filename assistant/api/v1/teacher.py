@@ -1,9 +1,12 @@
 from django.http import Http404
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
+from assistant.models import AuthUserRef
 from assistant.api.v1.serializers.teacher import TeacherSerializer
-from assistant.db import people
+from assistant.db import people, base
 from assistant.api.apiviews import MyAPIView
+from django.contrib.auth.hashers import make_password
 
 
 class TeacherApi(MyAPIView):
@@ -21,13 +24,26 @@ class TeacherApi(MyAPIView):
 
     def post(self, request):
         params = request.data
+        params['password'] = make_password(params['password'])
         if "id" in params:
             return TeacherApi.update(request)
-        serializer = TeacherSerializer(data=params)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            save_point = transaction.savepoint()
+            serializer = TeacherSerializer(data=params)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                transaction.savepoint_rollback(save_point)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            result = base.create_auth_user(params['username'], params['password'],
+                                           params['org_id'], AuthUserRef.Type.TEACHER.value)
+            if result is None:
+                transaction.savepoint_commit(save_point)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                transaction.savepoint_rollback(save_point)
+                return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def update(request):

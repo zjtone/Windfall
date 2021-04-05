@@ -175,14 +175,14 @@ class CourseList(MyAPIView):
             data_status = int(params['status'])
             data_status = data_status if data_status > 0 else None
         # 返回用户的课程列表
-        if "user_id" in params:
+        if "user_id" in params and params["user_id"] is not None:
             return Response({
                 "data": UserSerializer(
                     course.list_course_with_user(params["user_id"], offset, limit, data_status), many=True).data,
                 "total": course.count_course_with_user(params["user_id"], data_status)
             })
         # 返回教师的课程列表
-        if "teacher_id" in params:
+        if "teacher_id" in params and params["teacher_id"] is not None:
             return Response({
                 "data": UserSerializer(
                     course.list_course_with_teacher(params["teacher_id"], offset, limit, data_status), many=True).data,

@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from assistant.models import AuthUserRef
 from assistant.api.v1.serializers.org import OrgSerializer
-from assistant.api.v1.serializers.auth_user import AuthUserSerializer, AuthUserRefSerializer
+from assistant.db import base
 from assistant.db.org import get_org_by_id
 from assistant.api.apiviews import MyAPIView
 from django.contrib.auth.hashers import make_password
@@ -59,33 +59,18 @@ class CreateOrg(MyAPIView):
             # 创建机构
             if "id" in params:
                 return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
-            serializer = OrgSerializer(data=request.data)
+            serializer = OrgSerializer(data=params)
             if serializer.is_valid():
                 serializer.save()
             else:
                 transaction.savepoint_rollback(save_point)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # 创建机构账号
-            auth_user_serializer = AuthUserSerializer(data={
-                'username': params['name'],
-                'password': params['password']
-            })
-            if auth_user_serializer.is_valid():
-                auth_user_serializer.save()
+
+            result = base.create_auth_user(params['name'], params['password'],
+                                     serializer.data['id'], AuthUserRef.Type.ORG.value)
+            if result is None:
+                transaction.savepoint_commit(save_point)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 transaction.savepoint_rollback(save_point)
-                return Response(auth_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # 机构账号与用户账号关联
-            auth_user_ref_serializer = AuthUserRefSerializer(data={
-                'auth_id': auth_user_serializer.data['id'],
-                'type': AuthUserRef.Type.ORG.value,
-                'org_id': serializer.data['id']
-            })
-            if auth_user_ref_serializer.is_valid():
-                auth_user_ref_serializer.save()
-            else:
-                transaction.savepoint_rollback(save_point)
-                return Response(auth_user_ref_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            transaction.savepoint_commit(save_point)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response("error", status=status.HTTP_400_BAD_REQUEST)
+                return Response(result, status=status.HTTP_400_BAD_REQUEST)
