@@ -37,6 +37,7 @@ class AuthUserRef(BaseModel):
         ORG = 3  # 机构
 
     auth_id = models.BigIntegerField()
+    auth_user_id = models.BigIntegerField(default=-1)
     type = models.IntegerField(default=-1)
     org_id = models.BigIntegerField()
 

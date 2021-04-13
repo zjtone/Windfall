@@ -85,13 +85,16 @@ class ShoppingCartList(MyAPIView):
         if 'status' in params:
             data_status = int(params['status'])
             data_status = data_status if data_status > 0 else None
-        
-        shopping_list = shopping.list_shopping_cart(org_id, offset, limit, data_status)
+        user_id = None
+        if 'user_id' in params:
+            user_id = params['user_id']
+
+        shopping_list = shopping.list_shopping_cart(org_id, user_id, offset, limit, data_status)
         user_ids, course_ids = set(), set()
         for shopping_cart in shopping_list:
             user_ids.add(shopping_cart.user_id)
             course_ids.add(shopping_cart.good_id)
-        user_list = people.list_user_by_id(user_ids)
+        user_list = people.list_auth_user_by_id(user_ids)
         course_list = course.list_course_by_id(course_ids)
         
         user_dict, course_dict = {}, {}
@@ -120,5 +123,5 @@ class ShoppingCartList(MyAPIView):
                 })
         return HttpResponse(json.dumps({
             "data": result_list,
-            "total": shopping.count_shopping_cart(org_id, data_status)
+            "total": shopping.count_shopping_cart(org_id, user_id, data_status)
         }))

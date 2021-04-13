@@ -66,7 +66,7 @@ class CreateOrg(MyAPIView):
                 transaction.savepoint_rollback(save_point)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            result = base.create_auth_user(params['name'], params['password'],
+            result = base.create_auth_user(serializer.data['id'], params['name'], params['password'],
                                      serializer.data['id'], AuthUserRef.Type.ORG.value)
             if result is None:
                 transaction.savepoint_commit(save_point)

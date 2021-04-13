@@ -13,4 +13,4 @@ class AuthUserRefSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUserRef
         fields = ['id', 'status', 'create_time', 'modify_time', 'delete_time',
-                  'auth_id', 'type', 'org_id']
+                  'auth_id', 'type', 'org_id', 'auth_user_id']

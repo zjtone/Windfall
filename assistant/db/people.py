@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User as AuthUser
 from assistant.models import Employee, Teacher, User, AuthUserRef, CourseUserRef
 from assistant.db.base import get_by_id
 
@@ -22,8 +23,12 @@ def list_teacher_by_id(ids, status=1):
     return Teacher.objects.filter(id__in=ids, status=status).all()
 
 
-def list_user_by_id(ids, status=1):
-    return User.objects.filter(id__in=ids, status=status).all()
+def list_auth_user_by_id(ids):
+    return AuthUser.objects.filter(id__in=ids).all()
+
+
+def list_user_by_id(ids):
+    return User.objects.filter(id__in=ids).all()
 
 
 def get_people_by_auth_id(auth_id):
