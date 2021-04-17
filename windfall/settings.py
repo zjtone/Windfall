@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'windfall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "assistant",
+        'NAME': "assistant2",
         'USER': 'root',
         'PASSWORD': 'teddysun.com',
         'HOST': '47.106.240.56',

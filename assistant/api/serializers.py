@@ -13,6 +13,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             data['access'] = str(refresh.access_token)
             data['username'] = self.user.username
             auth_user_ref = get_people_by_auth_id(self.user.id)
+            data['id'] = auth_user_ref.auth_user_id
             data['org_id'] = auth_user_ref.org_id
             data['auth_id'] = self.user.id
             data['type'] = auth_user_ref.type

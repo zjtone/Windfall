@@ -75,7 +75,7 @@ class OrderApi(MyAPIView):
                 if ref_serializer.is_valid():
                     ref_serializer.save()
                 else:
-                transaction.savepoint_rollback(save_point)
+                    transaction.savepoint_rollback(save_point)
                     return Response({
                         "good_id": good["good_id"],
                         "type": good["type"],
@@ -83,7 +83,6 @@ class OrderApi(MyAPIView):
                     }, status=status.HTTP_400_BAD_REQUEST)
             transaction.savepoint_commit(save_point)
             return Response(order_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderList(MyAPIView):

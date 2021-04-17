@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import Course, Tag, CourseTagRef, Teacher, CourseTeacherRef
@@ -46,40 +47,53 @@ class CourseApi(MyAPIView):
         if "times" in params:
             times = params["times"]
             del params["times"]
-        serializer = CourseSerializer(data=params)
-        if serializer.is_valid():
-            serializer.save()
-            if tags is not None:
-                course.course_tags(serializer.data["id"], tags, serializer.data["org_id"])
-            if teachers is not None:
-                course.course_teachers(serializer.data["id"], teachers, serializer.data["org_id"])
-            if times is not None:
-                course.course_times(serializer.data["id"], times, serializer.data["org_id"])
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            save_point = transaction.savepoint()
+            serializer = CourseSerializer(data=params)
+            try:
+                if serializer.is_valid():
+                    serializer.save()
+                    if tags is not None:
+                        course.course_tags(serializer.data["id"], tags, serializer.data["org_id"])
+                    if teachers is not None:
+                        course.course_teachers(serializer.data["id"], teachers, serializer.data["org_id"])
+                    if times is not None:
+                        course.course_times(serializer.data["id"], times, serializer.data["org_id"])
+                    transaction.savepoint_commit(save_point)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    transaction.savepoint_rollback(save_point)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                transaction.savepoint_rollback(save_point)
+                return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def update(request):
-        try:
-            params = request.data
-            if "id" in params:
-                update_course = request.data
-                exist_course = course.get_course_by_id(params["id"])
-                for key in update_course:
-                    if key == "tags":
-                        course.course_tags(serializer.data["id"], params["tags"], serializer.data["org_id"])
-                    elif key == "teachers":
-                        course.course_teachers(serializer.data["id"], params["teachers"], serializer.data["org_id"])
-                    elif key == "times":
-                        course.course_times(serializer.data["id"], params["times"], serializer.data["org_id"])
-                    elif hasattr(exist_course, key):
-                        setattr(exist_course, key, update_course[key])
-                exist_course.save()
-                return Response("", status=status.HTTP_200_OK)
-            raise Http404
-        except Exception as e:
-            print("e ", e)
-            raise Http404
+        with transaction.atomic():
+            save_point = transaction.savepoint()
+            try:
+                params = request.data
+                if "id" in params:
+                    update_course = request.data
+                    exist_course = course.get_course_by_id(params["id"])
+                    for key in update_course:
+                        if key == "tags":
+                            course.course_tags(params["id"], params["tags"], params["org_id"])
+                        elif key == "teachers":
+                            course.course_teachers(params["id"], params["teachers"], params["org_id"])
+                        elif key == "times":
+                            course.course_times(params["id"], params["times"], params["org_id"])
+                        elif hasattr(exist_course, key):
+                            setattr(exist_course, key, update_course[key])
+                    exist_course.save()
+                    transaction.savepoint_commit(save_point)
+                    return Response("", status=status.HTTP_200_OK)
+                raise Http404
+            except Exception as e:
+                print("e ", e)
+                transaction.savepoint_rollback(save_point)
+                raise Http404
 
 
 class TagApi(MyAPIView):

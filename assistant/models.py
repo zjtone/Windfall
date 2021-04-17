@@ -23,6 +23,7 @@ class People(BaseModel):
     email = models.CharField(max_length=50)
     openid = models.CharField(max_length=200, default="")
     leader_id = models.BigIntegerField(default=-1)
+    gender = models.CharField(max_length=10, default="")
 
     class Meta:
         abstract = True

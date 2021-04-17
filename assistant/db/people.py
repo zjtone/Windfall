@@ -15,6 +15,10 @@ def get_user_by_id(_id):
     return get_by_id(User, _id)
 
 
+def get_auth_user_by_id(_id):
+    return get_by_id(AuthUser, _id)
+
+
 def list_employee_by_id(ids, status=1):
     return Employee.objects.filter(id__in=ids, status=status).all()
 

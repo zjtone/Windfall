@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from assistant.models import AuthUserRef
 from assistant.api.v1.serializers.org import OrgSerializer
-from assistant.db import base
+from assistant.db import base, people
 from assistant.db.org import get_org_by_id
 from assistant.api.apiviews import MyAPIView
 from django.contrib.auth.hashers import make_password
@@ -41,10 +41,20 @@ class OrgApi(MyAPIView):
                     if hasattr(exist_org, key):
                         setattr(exist_org, key, update_org[key])
                 exist_org.save()
+
+                # 修改密码
+                if 'password' in params:
+                    password = make_password(params['password'])
+                    if password != exist_org.password:
+                        auth_user_ref = people.get_people_by_auth_id(auth_id=params['id'])
+                        auth_user = people.get_auth_user_by_id(auth_user_ref.id)
+                        auth_user.password = password
+                        auth_user.save()
+
                 return Response("", status=status.HTTP_200_OK)
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateOrg(MyAPIView):

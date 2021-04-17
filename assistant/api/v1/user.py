@@ -57,10 +57,20 @@ class UserApi(MyAPIView):
                     if hasattr(exist_user, key):
                         setattr(exist_user, key, update_user[key])
                 exist_user.save()
+
+                # 修改密码
+                if 'password' in params:
+                    password = make_password(params['password'])
+                    if password != exist_user.password:
+                        auth_user_ref = people.get_people_by_auth_id(auth_id=params['id'])
+                        auth_user = people.get_auth_user_by_id(auth_user_ref.id)
+                        auth_user.password = password
+                        auth_user.save()
+
                 return Response("", status=status.HTTP_200_OK)
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserList(MyAPIView):

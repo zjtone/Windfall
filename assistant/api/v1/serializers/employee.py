@@ -5,6 +5,6 @@ from rest_framework import serializers
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id', 'org_id', 'status', 'img',
+        fields = ['id', 'org_id', 'status', 'img', 'gender',
                   'username', 'id_card', 'description',
                   'phone', 'email', 'openid', 'leader_id']

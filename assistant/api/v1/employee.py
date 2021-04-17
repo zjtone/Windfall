@@ -56,10 +56,20 @@ class EmployeeApi(MyAPIView):
                     if hasattr(exist_employee, key):
                         setattr(exist_employee, key, update_employee[key])
                 exist_employee.save()
+
+                # 修改密码
+                if 'password' in params:
+                    password = make_password(params['password'])
+                    if password != exist_employee.password:
+                        auth_user_ref = people.get_people_by_auth_id(auth_id=params['id'])
+                        auth_user = people.get_auth_user_by_id(auth_user_ref.id)
+                        auth_user.password = password
+                        auth_user.save()
+
                 return Response("", status=status.HTTP_200_OK)
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            raise Http404
+            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeList(MyAPIView):

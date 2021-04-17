@@ -5,6 +5,6 @@ from rest_framework import serializers
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
-        fields = ['id', 'org_id', 'status', 'img',
+        fields = ['id', 'org_id', 'status', 'img', 'gender',
                   'username', 'id_card', 'description',
                   'phone', 'email', 'openid', 'leader_id']
