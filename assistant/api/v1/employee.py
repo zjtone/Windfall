@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from assistant.models import AuthUserRef
 from assistant.api.v1.serializers.employee import EmployeeSerializer
-from assistant.db import people, base
+from assistant.db import people, base, org
 from assistant.api.apiviews import MyAPIView
 from django.contrib.auth.hashers import make_password
 
@@ -25,8 +25,17 @@ class EmployeeApi(MyAPIView):
     def post(self, request):
         params = request.data
         params['password'] = make_password(params['password'])
+
         if "id" in params:
             return EmployeeApi.update(request)
+
+        if 'org_id' not in params:
+            return Response("非法机构！", status=status.HTTP_400_BAD_REQUEST)
+        org_id = params["org_id"]
+        _org = org.get_org_by_id(org_id)
+        if _org is None:
+            return Response("非法机构！", status=status.HTTP_400_BAD_REQUEST)
+
         with transaction.atomic():
             save_point = transaction.savepoint()
             serializer = EmployeeSerializer(data=request.data)
@@ -49,6 +58,8 @@ class EmployeeApi(MyAPIView):
     def update(request):
         try:
             params = request.data
+            if 'org_id' in params:
+                return Response("非法！机构不能修改！", status=status.HTTP_400_BAD_REQUEST)
             if "id" in params:
                 update_employee = request.data
                 exist_employee = people.get_employee_by_id(params["id"])

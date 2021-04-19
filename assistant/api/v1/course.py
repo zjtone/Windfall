@@ -74,6 +74,9 @@ class CourseApi(MyAPIView):
             save_point = transaction.savepoint()
             try:
                 params = request.data
+                if 'org_id' in params:
+                    return Response("非法！机构不能修改！", status=status.HTTP_400_BAD_REQUEST)
+
                 if "id" in params:
                     update_course = request.data
                     exist_course = course.get_course_by_id(params["id"])

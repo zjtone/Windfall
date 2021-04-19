@@ -26,6 +26,7 @@ urlpatterns = [
     path('teacher/', teacher.TeacherApi.as_view(), name="teacher"),
     path('teacher/list/', teacher.TeacherList.as_view(), name='teacher list'),
     path('user/', user.UserApi.as_view(), name='user'),
+    path('user/create/', user.CreateUserApi.as_view(), name='CreateUserApi'),
     path('user/list/', user.UserList.as_view(), name='user list'),
     # Organization
     path('org/', org.OrgApi.as_view(), name='org'),

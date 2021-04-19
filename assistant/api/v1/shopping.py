@@ -56,6 +56,9 @@ class ShoppingCartApi(MyAPIView):
     def update(request):
         try:
             params = request.data
+            if 'org_id' in params:
+                return Response("非法！机构不能修改！", status=status.HTTP_400_BAD_REQUEST)
+
             if "id" in params:
                 update_shopping_cart = request.data
                 exist_shopping_cart = shopping.get_shopping_cart_by_id(params["id"])

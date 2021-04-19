@@ -2,11 +2,51 @@ from django.http import Http404
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from assistant.models import AuthUserRef
 from assistant.api.v1.serializers.user import UserSerializer
-from assistant.db import people, base
+from assistant.db import people, base, org
 from assistant.api.apiviews import MyAPIView
 from django.contrib.auth.hashers import make_password
+
+
+def create_user(params):
+    params['password'] = make_password(params['password'])
+
+    if 'org_id' not in params:
+        return Response("非法机构！", status=status.HTTP_400_BAD_REQUEST)
+    org_id = params["org_id"]
+    _org = org.get_org_by_id(org_id)
+    if _org is None:
+        return Response("非法机构！", status=status.HTTP_400_BAD_REQUEST)
+
+    with transaction.atomic():
+        save_point = transaction.savepoint()
+        # 创建用户
+        serializer = UserSerializer(data=params)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            transaction.savepoint_rollback(save_point)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        result = base.create_auth_user(serializer.data['id'], params['username'], params['password'],
+                                       params['org_id'], AuthUserRef.Type.USER.value)
+        if result is None:
+            transaction.savepoint_commit(save_point)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            transaction.savepoint_rollback(save_point)
+            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateUserApi(MyAPIView):
+    permission_classes = [AllowAny]  # 权限
+    authentication_classes = []  # 身份验证
+
+    def post(self, request):
+        params = request.data
+        return create_user(params)
 
 
 class UserApi(MyAPIView):
@@ -25,31 +65,18 @@ class UserApi(MyAPIView):
     def post(self, request):
         params = request.data
         params['password'] = make_password(params['password'])
+
         if "id" in params:
             return UserApi.update(request)
-        with transaction.atomic():
-            save_point = transaction.savepoint()
-            # 创建用户
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-            else:
-                transaction.savepoint_rollback(save_point)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            result = base.create_auth_user(serializer.data['id'], params['username'], params['password'],
-                                           params['org_id'], AuthUserRef.Type.USER.value)
-            if result is None:
-                transaction.savepoint_commit(save_point)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                transaction.savepoint_rollback(save_point)
-                return Response(result, status=status.HTTP_400_BAD_REQUEST)
+        return create_user(params)
 
     @staticmethod
     def update(request):
         try:
             params = request.data
+            if 'org_id' in params:
+                return Response("非法！机构不能修改！", status=status.HTTP_400_BAD_REQUEST)
             if "id" in params:
                 update_user = request.data
                 exist_user = people.get_user_by_id(params["id"])
