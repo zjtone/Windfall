@@ -97,8 +97,15 @@ class CourseTimeRef(BaseModel):
 
 
 class CourseUserRef(BaseModel):
-    course_id = models.BigIntegerField(default=-1)
+    class Type(enum.Enum):
+        INVALID = -1
+        COURSE = 0
+    good_id = models.BigIntegerField(default=-1)
     user_id = models.BigIntegerField(default=-1)
+    count = models.BigIntegerField(default=1)
+    price = models.BigIntegerField(default=-1)
+    type = models.IntegerField(default=-1)
+    add_time = models.DateTimeField(auto_now=True)
 
 
 class ShoppingCart(BaseModel):
@@ -121,4 +128,5 @@ class OrderRef(BaseModel):
         COURSE = 0
     order_id = models.BigIntegerField(null=False)
     good_id = models.BigIntegerField(null=False)
+    price = models.BigIntegerField(default=0)
     type = models.IntegerField(default=-1)

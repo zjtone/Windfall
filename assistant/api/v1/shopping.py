@@ -97,7 +97,7 @@ class ShoppingCartList(MyAPIView):
         for shopping_cart in shopping_list:
             user_ids.add(shopping_cart.user_id)
             course_ids.add(shopping_cart.good_id)
-        user_list = people.list_auth_user_by_id(user_ids)
+        user_list = people.list_user_by_id(user_ids)
         course_list = course.list_course_by_id(course_ids)
         
         user_dict, course_dict = {}, {}

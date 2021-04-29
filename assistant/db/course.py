@@ -53,7 +53,11 @@ def list_course_with_user(user_id, offset, limit, status=None):
     if status:
         refs = refs.filter(status=status)
     refs = refs.all()[(offset-1) * limit:offset * limit]
-    return list_course_by_id([ref["course_id"] for ref in refs])
+    course_ids = []
+    for ref in refs:
+        if ref.type == CourseUserRef.Type.COURSE.value:
+            course_ids.append(ref.good_id)
+    return list_course_by_id(course_ids)
 
 
 def count_course_with_user(user_id, status=None):

@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from assistant.api.serializers import MyTokenObtainPairView
-from assistant.api.v1 import course, employee, teacher, user, org, login, shopping, files
+from assistant.api.v1 import course, employee, teacher, user, org, login, shopping, files, order
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -34,6 +34,9 @@ urlpatterns = [
     # Shopping
     path('shopping/', shopping.ShoppingCartApi.as_view(), name='shopping'),
     path('shopping/list/', shopping.ShoppingCartList.as_view(), name='shopping'),
+    # Order
+    path('order/', order.OrderApi.as_view(), name='order'),
+    path('order/list/', order.OrderList.as_view(), name='order'),
     # File
     path('file/', files.FileApi.as_view(), name='file')
 ]

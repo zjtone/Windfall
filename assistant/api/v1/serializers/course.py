@@ -1,4 +1,4 @@
-from assistant.models import Course, Tag, CourseTagRef, CourseTeacherRef, CourseTimeRef, Time
+from assistant.models import Course, Tag, CourseTagRef, CourseTeacherRef, CourseTimeRef, Time, CourseUserRef
 from assistant.api.v1.serializers.teacher import TeacherSerializer
 from rest_framework import serializers
 
@@ -45,3 +45,9 @@ class TimeSerializer(serializers.ModelSerializer):
         model = Time
         fields = ['id', 'org_id', 'status',
                   'start_time', 'end_time']
+
+
+class CourseUserRefSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseUserRef
+        fields = ["good_id", "user_id", "count", "price", "type", "add_time", "org_id"]
